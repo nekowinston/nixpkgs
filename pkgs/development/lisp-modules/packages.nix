@@ -557,6 +557,24 @@ let
         };
       });
 
+      alive-lsp = build-asdf-system rec {
+        pname = "alive-lsp";
+        version = "0.3.7";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "nobody-famous";
+          repo = "alive-lsp";
+          tag = "v${version}";
+          hash = "sha256-VqycmOzxTww8M8kAY7YF8F0EJheBB6dGzxbYOT8TskI=";
+        };
+
+        lispLibs = with self; [
+          bordeaux-threads
+          cl-json
+          usocket
+          flexi-streams
+        ];
+      };
     }
     // optionalAttrs pkgs.config.allowAliases {
       cl-glib_dot_gio = throw "cl-glib_dot_gio was replaced by cl-gio";

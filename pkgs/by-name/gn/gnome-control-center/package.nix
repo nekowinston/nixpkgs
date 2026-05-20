@@ -90,7 +90,15 @@ stdenv.mkDerivation (finalAttrs: {
       inherit glibc tzdata shadow;
       inherit cups networkmanagerapplet;
     })
+    ./gnome-remote-desktop.patch
   ];
+
+  postPatch = ''
+    # fix for https://gitlab.gnome.org/GNOME/gnome-control-center/-/work_items/3752
+    substituteInPlace panels/system/about/cc-system-details-window.c --replace-fail \
+      'char *argv[] = { LIBEXECDIR "/gnome-control-center-print-renderer", NULL };' \
+      "char *argv[] = { \"$out/gnome-control-center-print-renderer\", NULL };"
+  '';
 
   nativeBuildInputs = [
     blueprint-compiler
